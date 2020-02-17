@@ -145,6 +145,6 @@ app.post('/signup', (request, response) => {
 });
 
 //
-// PREFIX "API" DO ENDPOINTÓW
+// "API" PREFIX FOR ENDPOINTS
 //
 exports.api = functions.https.onRequest(app);
