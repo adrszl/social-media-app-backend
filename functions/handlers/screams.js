@@ -11,14 +11,14 @@ exports.getAllScreams = (request, response) => {
                 screams.push({
                     screamId: doc.id,
                     body: doc.data().body,
-                    userHandle: DOMRectList.data().userHandle,
+                    userHandle: doc.data().userHandle,
                     createdAt: doc.data().createdAt
                 });
             });
             return response.json(screams);
         })
         .catch(err => console.error(err));
-}
+};
 
 // 
 // SET NEW POST function
@@ -42,4 +42,4 @@ exports.postOneScream = (request, response) => {
             response.status(500).json({ error: 'something went wrong...' });
             console.log(error);
         });
-}
+};
