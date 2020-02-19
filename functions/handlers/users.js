@@ -1,6 +1,6 @@
 const { admin, db } = require('../util/admin');
 const config = require('../protected/credentials');
-const { validateSignupData, validateLoginData } = require('../util/validators');
+const { validateSignupData, validateLoginData, reduceUserDetails } = require('../util/validators');
 const firebase = require('firebase');
 
 firebase.initializeApp(config);
@@ -101,6 +101,47 @@ exports.login = (request, response) => {
         });
 }
 
+// 
+// ADD USER DETAILS
+// 
+exports.addUserDetails = (request, response) => {
+    let userDetails = reduceUserDetails(request.body);
+
+    db.doc(`/users/${request.user.handle}`).update(userDetails)
+        .then(() => {
+            return response.json({ message: 'Details added successfully' });
+        })
+        .catch((err) => {
+            console.error(err);
+            return response.status(500).json({ error: err.code });
+        })
+}
+
+// 
+// GET ATHENTICATED USER'S DATA TO THE REDUX
+// 
+exports.getAuthenticatedUser = (request, response) => {
+    let userData = {};
+
+    db.doc(`/users/${request.user.handle}`).get()
+        .then((doc) => {
+            if (doc.exists) {
+                userData.credentials = doc.data();
+                return db.collection('likes').where('userHandle', '==', request.user.handle).get();
+            }
+        })
+        .then((data) => {
+            userData.likes = [];
+            data.forEach((doc) => {
+                userData.likes.push(doc.data());
+            })
+            return response.json(userData);
+        })
+        .catch((err) => {
+            console.error(err);
+            return response.status(500).json({ error: err.code});
+        })
+}
 // 
 // IMAGE UPLOAD FOR THE PROFILE IMAGE
 // 
