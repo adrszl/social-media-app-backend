@@ -16,6 +16,9 @@ app.post('/scream', FBAuth, postOneScream);
 app.post('/signup', signup);
 app.post('/login', login);
 
+// 
+// IMAGE UPLOAD FOR THE PROFILE IMAGE
+// 
 app.post('/user/image', FBAuth, uploadImage);
 
 //
