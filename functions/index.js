@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
 const app = require('express')();
-const { getAllScreams, postOneScream, getScream } = require('./handlers/screams');
+const { getAllScreams, postOneScream, getScream, commentOnScream } = require('./handlers/screams');
 const { signup, login, uploadImage, addUserDetails, getAuthenticatedUser } = require('./handlers/users');
 const FBAuth = require('./util/fbAuth');
 
@@ -11,11 +11,12 @@ const FBAuth = require('./util/fbAuth');
  */
 
 // 
-// GET POSTS, SET NEW POST AND SEE PARTICULAR POST
+// GET POSTS, SET NEW POST, SEE A PARTICULAR POST AND POST COMMENT
 // 
 app.get('/screams', getAllScreams);
 app.post('/scream', FBAuth, postOneScream);
 app.get('/scream/:screamId', getScream);
+app.post('/scream/:screamId/comment', FBAuth, commentOnScream);
 
 /* 
  * * * * * * * *
