@@ -97,6 +97,9 @@ exports.commentOnScream = (request, response) => {
             if(!doc.exists) {
                 return response.status(404).json({ error: 'Scream not found' });
             }
+            return doc.ref.update({ commentCount: doc.data().commentCount + 1 });
+        })
+        .then(() => {
             return db.collection('comments').add(newComment);
         })
         .then(() => {
@@ -177,7 +180,7 @@ exports.unlikeScream = (request, response) => {
             if(data.empty) {
                 return response.status(400).json({ error: 'Post not liked' });
             } else {
-                return db.doc(`/likes/${data.docs[0].data().id}`).delete()
+                return db.doc(`/likes/${data.docs[0].id}`).delete()
                     .then(() => {
                         screamData.likeCount--;
                         return screamDocument.update({ likeCount: screamData.likeCount });
