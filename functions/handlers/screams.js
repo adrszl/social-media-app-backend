@@ -195,3 +195,30 @@ exports.unlikeScream = (request, response) => {
             response.status(500).json({ error: err.code });
         });
 }
+
+// 
+// 
+// 
+exports.deleteScream = (request, response) => {
+    const document = db.doc(`/screams/${request.params.screamId}`);
+    
+    document.get()
+        .then((doc) => {
+            if(!doc.exists) {
+                return response.status(404).json({ error: 'Post not found' });
+            }
+            // CHECKING IF USER OWNS THIS POST
+            if(doc.data().userHandle !== request.user.handle) {
+                return response.status(403).json({ error: 'Unauthorized' });
+            } else {
+                return document.delete();
+            }
+        })
+        .then(() => {
+            response.json({ message: 'Post deleted successfully' });
+        })
+        .catch((err) => {
+            console.error(err);
+            return response.status(500).json({ error: err.code });
+        })
+}
