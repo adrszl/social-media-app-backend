@@ -10,7 +10,15 @@ const {
     unlikeScream, 
     deleteScream  
 } = require('./handlers/screams');
-const { signup, login, uploadImage, addUserDetails, getAuthenticatedUser } = require('./handlers/users');
+const { 
+    signup, 
+    login, 
+    uploadImage, 
+    addUserDetails, 
+    getAuthenticatedUser,
+    getUserDetails,
+    markNotificationsRead 
+} = require('./handlers/users');
 const FBAuth = require('./util/fbAuth');
 
 /* 
@@ -59,6 +67,16 @@ app.post('/user', FBAuth, addUserDetails);
 // GET ATHENTICATED USER'S DATA TO THE REDUX
 // 
 app.get('/user', FBAuth, getAuthenticatedUser);
+
+// 
+// GET USER DETAILS
+// 
+app.get('/user/:handle', getUserDetails);
+
+// 
+// MARK NOTIFICATION AS READ
+// 
+app.post('/notifications', FBAuth, markNotificationsRead);
 
 //
 // "API" PREFIX FOR ENDPOINTS
