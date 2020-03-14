@@ -157,6 +157,8 @@ exports.onUserImageChange = functions.region('europe-west1').firestore.document(
                     });
                     return batch.commit();
                 })
+        } else {
+            return true;
         }
     });
 
@@ -188,6 +190,6 @@ exports.onScreamDelete = functions.region('europe-west1').firestore.document('/s
             })
             .catch((err) => {
                 console.error(err);
-                
+
             })
     })
