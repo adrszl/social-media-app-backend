@@ -12,7 +12,10 @@ exports.getAllScreams = (request, response) => {
                     screamId: doc.id,
                     body: doc.data().body,
                     userHandle: doc.data().userHandle,
-                    createdAt: doc.data().createdAt
+                    createdAt: doc.data().createdAt,
+                    commentCount: doc.data().commentCount,
+                    likeCount: doc.data().likeCount,
+                    userImage: doc.data().userImage
                 });
             });
             return response.json(screams);
@@ -95,7 +98,7 @@ exports.commentOnScream = (request, response) => {
     db.doc(`/screams/${request.params.screamId}`).get()
         .then((doc) => {
             if(!doc.exists) {
-                return response.status(404).json({ error: 'Scream not found' });
+                return response.status(404).json({ comment: 'Scream not found' });
             }
             return doc.ref.update({ commentCount: doc.data().commentCount + 1 });
         })
